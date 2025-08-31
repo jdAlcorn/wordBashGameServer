@@ -68,6 +68,10 @@ async def get():
 async def health_check():
     return {"status": "healthy"}
 
+@app.get("/ws/healthz")
+async def ws_health_check():
+    return {"status": "healthy"}
+
 @app.websocket("/ws/{game_id}")
 async def websocket_endpoint(websocket: WebSocket, game_id: str):
     await manager.connect(websocket, game_id)
