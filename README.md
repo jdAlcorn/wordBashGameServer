@@ -17,14 +17,20 @@ pip install -e .
 pip install -r requirements.txt
 ```
 
-### 3. Run Server
+### 3. Run Tests (Optional)
+```bash
+pip install -e .[test]
+pytest
+```
+
+### 4. Run Server
 ```bash
 uvicorn app:app --reload
 ```
 
 Server runs at http://localhost:8000
 
-### 4. Create DynamoDB Table (Optional)
+### 5. Create DynamoDB Table (Optional)
 
 For production use with DynamoDB:
 
