@@ -17,9 +17,15 @@ app = FastAPI(title="Word Game Server")
 
 # Use DynamoDB if AWS credentials available, otherwise memory storage
 try:
-    storage = DynamoDBStorage() if os.getenv('AWS_DEFAULT_REGION') else MemoryStorage()
-    logger.info(f"Using storage: {type(storage).__name__}")
-except Exception:
+    if os.getenv('AWS_DEFAULT_REGION'):
+        table_name = os.getenv('DDB_TABLE_NAME', 'game-states')
+        storage = DynamoDBStorage(table_name)
+        logger.info(f"Using DynamoDBStorage with table: {table_name}")
+    else:
+        storage = MemoryStorage()
+        logger.info("Using MemoryStorage")
+except Exception as e:
+    logger.error(f"Failed to initialize DynamoDB storage: {e}")
     storage = MemoryStorage()
     logger.info("Falling back to MemoryStorage")
 
